@@ -8,10 +8,10 @@ on:
   # but only for the master branch
   push:
     branches:
-      - master
+      - release
   pull_request:
     branches:
-      - master
+      - release
   # Also trigger on page_build, as well as release created events
   page_build:
   release:
