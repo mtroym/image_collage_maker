@@ -22,7 +22,7 @@ except Exception as e:
 print(find_packages())
 setup(
     name="collage_maker",
-    version="0.0.3",
+    version="0.0.4",
     keywords=("image", "image collage"),
     description="image collage maker",
     long_description=long_description,

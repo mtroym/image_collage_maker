@@ -1,4 +1,8 @@
 
+.. image:: https://github.com/mtroym/image_collage_maker/workflows/Upload%20Python%20Package/badge.svg :alt: RUN
+
+.. image:: https://img.shields.io/pypi/v/collage-maker   :alt: PyPI
+
 image collage maker
 ==============================
 
