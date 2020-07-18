@@ -1,6 +1,4 @@
-![Upload Python Package](https://github.com/mtroym/image_collage_maker/workflows/Upload%20Python%20Package/badge.svg)
-
-![PyPI](https://img.shields.io/pypi/v/collage-maker)
+![Upload Python Package](https://github.com/mtroym/image_collage_maker/workflows/Upload%20Python%20Package/badge.svg) ![PyPI](https://img.shields.io/pypi/v/collage-maker)
 
 image collage maker
 ==============================
