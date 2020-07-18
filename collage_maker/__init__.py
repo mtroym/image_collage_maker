@@ -6,17 +6,16 @@ Create time:    2020-07-18 23:46 Shanghai, China
 Filename:       collage_maker.py
 Introduction:   -
 """
-
-import cv2
-import numpy as np
-
 __all__ = ["make_collage"]
+
+import cv2 as _cv2
+import numpy as _np
 
 
 def _add_color_border_ul(image, px=1, color_value=None):
     px = int(px)
     if image.ndim == 2:
-        image = np.stack([image, image, image], axis=-1)
+        image = _np.stack([image, image, image], axis=-1)
         if color_value is None:
             color_value = [255, 255, 255]
         else:
@@ -29,9 +28,9 @@ def _add_color_border_ul(image, px=1, color_value=None):
             color_value = [255, 255, 255, 255]
     h, w, c = image.shape
     assert c == len(color_value)
-    ab = np.ones((px, w + px, c), dtype=np.uint8) * np.array(color_value)
-    lr = np.ones((h, px, c), dtype=np.uint8) * np.array(color_value)
-    new = np.concatenate([ab, np.concatenate([lr, image], axis=1)], axis=0)
+    ab = _np.ones((px, w + px, c), dtype=_np.uint8) * _np.array(color_value)
+    lr = _np.ones((h, px, c), dtype=_np.uint8) * _np.array(color_value)
+    new = _np.concatenate([ab, _np.concatenate([lr, image], axis=1)], axis=0)
     del ab, lr
     return new
 
@@ -39,7 +38,7 @@ def _add_color_border_ul(image, px=1, color_value=None):
 def _add_color_border_br(image, px=1, color_value=None):
     px = int(px)
     if image.ndim == 2:
-        image = np.stack([image, image, image], axis=-1)
+        image = _np.stack([image, image, image], axis=-1)
         if color_value is None:
             color_value = [255, 255, 255]
         else:
@@ -52,9 +51,9 @@ def _add_color_border_br(image, px=1, color_value=None):
             color_value = [255, 255, 255, 255]
     h, w, c = image.shape
     assert c == len(color_value)
-    ab = np.ones((px, w + px, c), dtype=np.uint8) * np.array(color_value)
-    lr = np.ones((h, px, c), dtype=np.uint8) * np.array(color_value)
-    new = np.concatenate([np.concatenate([image, lr], axis=1), ab], axis=0)
+    ab = _np.ones((px, w + px, c), dtype=_np.uint8) * _np.array(color_value)
+    lr = _np.ones((h, px, c), dtype=_np.uint8) * _np.array(color_value)
+    new = _np.concatenate([_np.concatenate([image, lr], axis=1), ab], axis=0)
     del ab, lr
     return new
 
@@ -81,7 +80,7 @@ def make_collage(
     ...    ],
     ...    direction=0, border_px=1, border_color=[0, 0, 0, 255])
 
-    In this example, ``image_x`` are image np.ndarray with 1 channel, 3 channels, 4 channels.
+    In this example, ``image_x`` are image _np.ndarray with 1 channel, 3 channels, 4 channels.
 
     :param images: list of (lists of) images
     :param direction: 0/1 to control row first or column first
@@ -90,7 +89,7 @@ def make_collage(
     :return:
     """
     made = _make(images, direction, border_px, border_color, True)[0]
-    return made.astype(np.uint8)
+    return made.astype(_np.uint8)
 
 
 def _make(
@@ -109,18 +108,18 @@ def _make(
     :return:
     """
 
-    if isinstance(images, np.ndarray):
+    if isinstance(images, _np.ndarray):
         if len(images.shape) == 2:
-            images = np.stack([images, images, images, np.ones_like(images) * 255], axis=-1)
+            images = _np.stack([images, images, images, _np.ones_like(images) * 255], axis=-1)
         else:
             if images.shape[-1] == 3:
-                images = np.concatenate([images, np.ones_like(images[:, :, :1]) * 255], axis=-1)
+                images = _np.concatenate([images, _np.ones_like(images[:, :, :1]) * 255], axis=-1)
         return images, 1
     next_direction = 1 - direction
     assert len(images) != 0, "the image list should have at least one."
 
     if len(images) == 1:
-        if isinstance(images[0], np.ndarray):
+        if isinstance(images[0], _np.ndarray):
             return images[0], 1
     # recursively make collage.
     cats = [
@@ -137,21 +136,21 @@ def _make(
     cats = [c[0] for c in cats]
 
     # border_px = 0
-    ratio = np.array([image.shape[direction] for image in cats], dtype=np.float)
+    ratio = _np.array([image.shape[direction] for image in cats], dtype=_np.float)
     sum_border = sum([image.shape[next_direction] for image in cats])
     ratio_v = 1.0
     if sum_border > IMAGE_COLLAGE_MAKER_PIXEL_LIM:
         ratio_v = sum_border / IMAGE_COLLAGE_MAKER_PIXEL_LIM
-    ratio = ratio / np.max(ratio)
+    ratio = ratio / _np.max(ratio)
     resizes = [
         image
         if r == 1 and ratio_v == 1
-        else cv2.resize(
+        else _cv2.resize(
             image,
             dsize=None,
             fx=1 / r / ratio_v,
             fy=1 / r / ratio_v,
-            interpolation=cv2.INTER_NEAREST,
+            interpolation=_cv2.INTER_NEAREST,
         )
         for (image, r) in zip(cats, ratio)
     ]
@@ -163,8 +162,8 @@ def _make(
         ]
         border_px = border_px if frist else 0
         cats = _add_color_border_br(
-            np.concatenate(borders, axis=next_direction), border_px, border_color
+            _np.concatenate(borders, axis=next_direction), border_px, border_color
         )
     else:
-        cats = np.concatenate(resizes, axis=next_direction)
+        cats = _np.concatenate(resizes, axis=next_direction)
     return cats, ratio_v
