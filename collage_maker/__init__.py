@@ -142,9 +142,9 @@ def _make(
     if sum_border > IMAGE_COLLAGE_MAKER_PIXEL_LIM:
         ratio_v = sum_border / IMAGE_COLLAGE_MAKER_PIXEL_LIM
     ratio = ratio / _np.max(ratio)
-    resizes = [
-        image
-        if r == 1 and ratio_v == 1
+#     resizes = [
+#         image
+#         if r == 1 and ratio_v == 1
 #         else _cv2.resize(
 #             image,
 #             dsize=None,
@@ -152,8 +152,8 @@ def _make(
 #             fy=1 / r / ratio_v,
 #             interpolation=_cv2.INTER_NEAREST,
 #         )
-        for (image, r) in zip(cats, ratio)
-    ]
+#         for (image, r) in zip(cats, ratio)
+#     ]
 
     if border_px != 0:
         borders = [
