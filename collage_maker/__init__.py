@@ -145,13 +145,13 @@ def _make(
     resizes = [
         image
         if r == 1 and ratio_v == 1
-        else _cv2.resize(
-            image,
-            dsize=None,
-            fx=1 / r / ratio_v,
-            fy=1 / r / ratio_v,
-            interpolation=_cv2.INTER_NEAREST,
-        )
+#         else _cv2.resize(
+#             image,
+#             dsize=None,
+#             fx=1 / r / ratio_v,
+#             fy=1 / r / ratio_v,
+#             interpolation=_cv2.INTER_NEAREST,
+#         )
         for (image, r) in zip(cats, ratio)
     ]
 
