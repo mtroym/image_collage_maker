@@ -139,21 +139,21 @@ def _make(
     ratio = _np.array([image.shape[direction] for image in cats], dtype=_np.float)
     sum_border = sum([image.shape[next_direction] for image in cats])
     ratio_v = 1.0
-    if sum_border > IMAGE_COLLAGE_MAKER_PIXEL_LIM:
-        ratio_v = sum_border / IMAGE_COLLAGE_MAKER_PIXEL_LIM
+    # if sum_border > IMAGE_COLLAGE_MAKER_PIXEL_LIM:
+    #     ratio_v = sum_border / IMAGE_COLLAGE_MAKER_PIXEL_LIM
     ratio = ratio / _np.max(ratio)
-#     resizes = [
-#         image
-#         if r == 1 and ratio_v == 1
-#         else _cv2.resize(
-#             image,
-#             dsize=None,
-#             fx=1 / r / ratio_v,
-#             fy=1 / r / ratio_v,
-#             interpolation=_cv2.INTER_NEAREST,
-#         )
-#         for (image, r) in zip(cats, ratio)
-#     ]
+    resizes = [
+        image
+        if r == 1 and ratio_v == 1
+        else _cv2.resize(
+            image,
+            dsize=None,
+            fx=1 / r / ratio_v,
+            fy=1 / r / ratio_v,
+            interpolation=_cv2.INTER_NEAREST,
+        )
+        for (image, r) in zip(cats, ratio)
+    ]
 
     if border_px != 0:
         borders = [
