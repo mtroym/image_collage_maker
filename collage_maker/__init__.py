@@ -141,29 +141,29 @@ def _make(
     ratio_v = 1.0
     # if sum_border > IMAGE_COLLAGE_MAKER_PIXEL_LIM:
     #     ratio_v = sum_border / IMAGE_COLLAGE_MAKER_PIXEL_LIM
-    # ratio = ratio / _np.max(ratio)
-    # resizes = [
-    #     image
-    #     if r == 1 and ratio_v == 1
-    #     else _cv2.resize(
-    #         image,
-    #         dsize=None,
-    #         fx=1 / r / ratio_v,
-    #         fy=1 / r / ratio_v,
-    #         interpolation=_cv2.INTER_NEAREST,
-    #     )
-    #     for (image, r) in zip(cats, ratio)
-    # ]
+    ratio = ratio / _np.max(ratio)
+    resizes = [
+        image
+        if r == 1 and ratio_v == 1
+        else _cv2.resize(
+            image,
+            dsize=None,
+            fx=1 / r / ratio_v,
+            fy=1 / r / ratio_v,
+            interpolation=_cv2.INTER_NEAREST,
+        )
+        for (image, r) in zip(cats, ratio)
+    ]
 
-    # if border_px != 0:
-    #     borders = [
-    #         _add_color_border_ul(image, border_px / ratio_last, border_color)
-    #         for image in resizes
-    #     ]
-    #     border_px = border_px if frist else 0
-    #     cats = _add_color_border_br(
-    #         _np.concatenate(borders, axis=next_direction), border_px, border_color
-    #     )
-    # else:
-    #     cats = _np.concatenate(resizes, axis=next_direction)
+    if border_px != 0:
+        borders = [
+            _add_color_border_ul(image, border_px / ratio_last, border_color)
+            for image in resizes
+        ]
+        border_px = border_px if frist else 0
+        cats = _add_color_border_br(
+            _np.concatenate(borders, axis=next_direction), border_px, border_color
+        )
+    else:
+        cats = _np.concatenate(resizes, axis=next_direction)
     return cats, ratio_v
